@@ -1,52 +1,85 @@
 package com.example.hw_31_spring_security.controller;
 
-import com.example.hw_31_spring_security.dto.UserInfoDto;
-import com.example.hw_31_spring_security.model.UserRole;
-import com.example.hw_31_spring_security.services.UserInfoService;
+import com.example.hw_31_spring_security.dto.ProductDto;
+import com.example.hw_31_spring_security.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-public class IndexController {
+@RequestMapping("/products")
+public class ProductController {
 
-    private final UserInfoService userInfoService;
+    private final ProductService productService;
 
-    @GetMapping("/")
-    public String index() {
-        log.info("index page");
-        return "index";
+    @GetMapping
+    public String getAllProducts(Model model) {
+        log.info("products page");
+        List<ProductDto> products = productService.findAllProducts();
+        model.addAttribute("products", products);
+        return "product/products";
     }
 
-    @GetMapping("login")
-    public String login() {
-        log.info("Login page");
-        boolean isAdminExists = userInfoService.isUserExistsWithRole(UserRole.ADMIN);
-        return isAdminExists ? "login" : "redirect: /admin";
+    @GetMapping("addProduct")
+    public String addProduct() {
+        log.info("product add page");
+        return "product/addProduct";
     }
 
-    @GetMapping("403")
-    public String error403() {
-        log.info("403 page");
-        return "403Error";
+    @PostMapping("addProduct")
+    public String addProduct(@RequestParam String productName,
+                             @RequestParam(defaultValue = "0") String cost, Model model) {
+        log.info("product add post page");
+        String msg;
+        if (productName.equals("")) {
+            msg = "Product name must be filled";
+        } else if (productService.isProductExists(productName)) {
+            msg = "Product exists!";
+        } else {
+            ProductDto productDto = new ProductDto(null, productName, Double.parseDouble(cost));
+            productService.addProduct(productDto);
+            msg = "Product added successfully!";
+            model.addAttribute("productDto", productDto);
+        }
+        model.addAttribute("message", msg);
+        return "product/addProduct";
     }
 
-    @GetMapping("signUp")
-    public String signUp() {
-        log.info("signUp page");
-        return "signUp";
+    @PostMapping
+    public String findOrDeleteProduct(@RequestParam String action, Model model,
+                                      @RequestParam(required = false) List<Integer> productId) {
+        log.info("product post page");
+        if (productId == null) {
+            model.addAttribute("message", "Please check product first");
+            return getAllProducts(model);
+        }
+
+        if (action.equals("delete")) {
+            log.info("\"DELETE\" CALLED");
+            return deleteProduct(model, productId);
+        }
+
+        log.info("\"FIND\" CALLED");
+        boolean isDeleted = false;
+        List<ProductDto> productDtoList = productService.findAllById(productId);
+        model.addAttribute("productList", productDtoList);
+        model.addAttribute("deleted", isDeleted);
+        return "product/product";
     }
 
-    @GetMapping("admin")
-    public String admin(@RequestParam String adminName, @RequestParam String adminPass) {
-        log.info("admin page");
-        UserInfoDto userInfoDto = new UserInfoDto(null, adminName, adminPass, UserRole.ADMIN);
-        userInfoService.createUser(userInfoDto);
-        return "admin";
+    @DeleteMapping
+    public String deleteProduct(Model model, @RequestParam List<Integer> productId) {
+        log.info("product delete page");
+        List<ProductDto> productDtoList = productService.deleteAllById(productId);
+        boolean isDeleted = true;
+        model.addAttribute("productList", productDtoList);
+        model.addAttribute("deleted", isDeleted);
+        return "product/product";
     }
 }

@@ -24,7 +24,6 @@
                     <input type="checkbox" name="checkAll" onclick="toggle(this)"/>Select all
                 </label>
                 </th>
-                <th scope="col">ID</th>
                 <th scope="col">Name</th>
                 <th scope="col">Cost</th>
             </tr>
@@ -36,7 +35,6 @@
                         <input type="checkbox" name="productId" th:value="${product.id}"/>
                     </label>
                 </td>
-                <td>[[${product.id}]]</td>
                 <td>[[${product.name}]]</td>
                 <td>[[${product.cost}]]</td>
             </tr>
@@ -47,18 +45,6 @@
             <input hidden type="submit" name="action" value="delete"/>Delete</label>
     </form>
 </div>
-
-<!--<form th:action="@{/products}" method="post">-->
-<!--        <p><label>-->
-<!--        <select size="5" name="product">-->
-<!--            <option selected disabled>Choose product</option>-->
-<!--                    <option th:each="prod: ${products}" th:value="${prod.id}" th:text="${prod.name}"></option>-->
-<!--                &lt;!&ndash;            <option th:each="prod: ${products}" th:value="${prod}" th:text="${prod.name}"></option>&ndash;&gt;-->
-<!--                &lt;!&ndash;            <option selected value="Крокодил Гена">Крокодил Гена</option>&ndash;&gt;-->
-<!--            </select>-->
-<!--        </label></p>-->
-<!--    <p><input type="submit" value="Find"></p>-->
-<!--</form>-->
 
 <footer th:insert="fragments/footer :: footer"></footer>
 </body>

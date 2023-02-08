@@ -7,7 +7,7 @@
 <body>
 <div class="box">
     <h3>Sign In or Register first</h3>
-    <a th:replace="fragments/registration_btn :: rgstr_btn"></a>
+    <a th:replace="fragments/buttons/registration_btn :: rgstr_btn"></a>
 </div>
 <div th:if="${param.error}">
     Invalid username and password.

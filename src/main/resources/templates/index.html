@@ -1,9 +1,24 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <title>HELLO </title>
+    <link th:href="styles.css" rel="stylesheet">
+    <title>Main</title>
 </head>
 <body>
-<h1>HELLO</h1>
+<!--<a sec:authorize="hasAuthority('admin')" th:href="@{/admin}">Admin</a>-->
+<div sec:authorize="isAuthenticated()">
+    <div th:replace="fragments/header :: header"></div>
+    <div>
+        <a sec:authorize="hasAuthority('ADMIN')" class="href_button" th:href="@{/admin}">GO TO ADMIN</a>
+    </div>
+    <a class="href_button" th:href="@{/products}">PRODUCTS</a>
+</div>
+<div sec:authorize="isAnonymous()">
+    <a class="href_button" th:href="@{/login}">LogIn</a>
+    <a th:replace="fragments/buttons/registration_btn :: rgstr_btn"></a>
+<!--    <a class="href_button" th:href="@{/registration}">Register</a>-->
+</div>
+<div><a class="href_button" th:href="@{/ping}">Ping</a></div>
 </body>
 </html>

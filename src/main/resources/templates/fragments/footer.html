@@ -1,17 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <body>
-<header th:fragment="header">
-    <div style="background-color: #97c8ff; width: 30%; height: 36px">
-        <h1>Hello <span th:remove="tag" sec:authentication="name">thymeleaf</span>!</h1>
-    </div>
-    <br/>
-<!--    <h1 th:inline="text">Hello <span th:remove="tag" sec:authentication="name">thymeleaf</span>!</h1>-->
-    <form th:action="@{/logout}" method="post">
-        <input type="submit" value="Sign Out"/>
-    </form>
-    <br/>
-</header>
+<footer th:fragment="footer">
+    <a class="href_button" href="/">Go to main page</a>
+</footer>
 </body>
 </html>
