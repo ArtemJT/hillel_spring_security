@@ -1,8 +1,8 @@
-CREATE SCHEMA IF NOT EXISTS test_db;
+# CREATE SCHEMA IF NOT EXISTS testDB;
 
-CREATE TABLE IF NOT EXISTS test_db.product
+CREATE TABLE IF NOT EXISTS testDB.product
 (
-    id     serial primary key,
-    "name" text    not null,
-    "cost" numeric not null
+    id   serial primary key,
+    name text    not null,
+    cost decimal(19, 2) not null
 );
