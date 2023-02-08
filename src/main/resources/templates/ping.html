@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>HELLO</title>
+</head>
+<body>
+<h1>HELLO</h1>
+<a th:if="${param.isAdminExists}" th:href="@{/admin}">LogIn</a>
+<div sec:authorize="isAuthenticated()" >
+<!--    <h4 sec:authentication="">-->
+<!--    Has a role ADMIN</h4>-->
+<!--    <h4 sec:authentication="hasRole('USER')">-->
+<!--    Has a role USER</h4>-->
+    <div th:replace="fragments/header :: header"></div>
+    <a th:href="@{/admin}">GO TO ADMIN</a>
+    <a th:href="@{/product}">GO TO PRODUCT</a>
+</div>
+<div sec:authorize="isAnonymous()">
+    <a th:href="@{/login}">LogIn</a>
+    <!--<a th:unless="${param.isAdminExists}" th:href="@{/login}">LogIn</a>-->
+    <a th:href="@{/signUp}">SignUp</a>
+</div>
+</body>
+</html>
